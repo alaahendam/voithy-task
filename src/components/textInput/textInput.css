@@ -1,0 +1,23 @@
+.textInput {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.textInput label {
+  margin-bottom: 3px;
+  color: gray;
+}
+.textInput input {
+  height: 38px;
+  margin: 5px 0px;
+  border-radius: 7px;
+  background-color: rgb(221, 221, 221);
+  border: none;
+  outline: none;
+  padding: 2px 7px;
+}
+.textInput input:focus {
+  background-color: white;
+  border: 1px solid rgb(221, 221, 221);
+  outline: none;
+}

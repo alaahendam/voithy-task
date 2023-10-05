@@ -1,0 +1,21 @@
+.landPage {
+  height: 90vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px;
+}
+.landPage img {
+  width: 400px;
+  height: 400px;
+}
+
+@media only screen and (max-width: 600px) {
+  .landPageButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

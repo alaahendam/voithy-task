@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route, useLocation } from "react-router-dom";
+import NavBar from "./components/navBar";
+import LandPage from "./pages/LandPage/LandPage";
+import Login from "./pages/Login/Login";
+import SignUp from "./pages/SignUp/SignUp";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
+  const location = useLocation();
+  console.log("pathName", location.pathname);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      style={{
+        position: "relative",
+      }}
+    >
+      <img
+        loading="lazy"
+        src="images/Home.png"
+        style={{
+          height: "99vh",
+          width: "100%",
+          position: "absolute",
+          zIndex: -1,
+        }}
+      />
+      {location.pathname == "/login" ||
+      location.pathname == "/signUp" ? null : (
+        <NavBar />
+      )}
+
+      <Routes>
+        <Route exact path="/" element={<LandPage />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/signUp" element={<SignUp />} />
+        <Route exact path="/dashboard" element={<Dashboard />} />
+      </Routes>
     </div>
   );
 }
