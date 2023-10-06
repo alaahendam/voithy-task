@@ -9,6 +9,7 @@
 .menu {
   width: 20%;
   height: 100%;
+  padding: 20px 0px 20px 20px;
 }
 .whiteContainer {
   background-color: white;
@@ -47,11 +48,15 @@
   width: 100%;
   height: 59%;
   background-color: #fafafa;
+  padding: 20px;
+  overflow: auto;
 }
 .rightSide {
   width: 55%;
   height: 95%;
   background-color: #fafafa;
+  padding: 20px;
+  overflow: auto;
 }
 @media only screen and (max-width: 600px) {
   .menu {
@@ -66,16 +71,19 @@
   }
   .leftSide {
     width: 98%;
-    height: 100vh;
+    height: 67%;
   }
   .records {
-    height: 60%;
+    height: 50%;
+    margin-bottom: 10px;
   }
   .appointment {
     margin-top: 2px;
-    height: 40%;
+    height: 50%;
+    margin-bottom: 10px;
   }
   .rightSide {
     width: 98%;
+    height: 33%;
   }
 }
