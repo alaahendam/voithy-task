@@ -5,13 +5,41 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import TextInput from "../../components/textInput/textInput";
 import Typography from "@mui/material/Typography";
-
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../firebase/firebase-config";
 const SignUp = () => {
   const navigate = useNavigate();
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
+  const [type, setType] = useState("patient");
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  // const [avilabledates, setAvilabledates] = useState([]);
+  // let dateOfweek = [
+  //   "Saturday",
+  //   "Sunday",
+  //   "Monday",
+  //   "Tuesday",
+  //   "Wednesday",
+  //   "Thursday",
+  //   "Friday",
+  // ];
+  const handleSignUp = async () => {
+    try {
+      const docRef = await addDoc(collection(db, "users"), {
+        name: name,
+        email: email,
+        password: password,
+        type: type,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+  if (window.localStorage.getItem("voithy-token")) {
+    navigate("/dashboard");
+  }
   return (
     <LoginLayout>
       <div className="login">
@@ -36,25 +64,27 @@ const SignUp = () => {
             <Button
               variant="contained"
               style={{
-                backgroundColor: "rgb(97, 197, 247)",
-                color: "white",
+                backgroundColor:
+                  type == "patient" ? "rgb(97, 197, 247)" : "white",
+                color: type == "patient" ? "white" : "rgb(97, 197, 247)",
                 marginTop: "10px",
                 marginBottom: "10px",
                 marginRight: "10px",
               }}
-              onClick={() => console.log("sign in")}
+              onClick={() => setType("patient")}
             >
               Patient
             </Button>
             <Button
               variant="contained"
               style={{
-                backgroundColor: "white",
-                color: "rgb(97, 197, 247)",
+                backgroundColor:
+                  type == "doctor" ? "rgb(97, 197, 247)" : "white",
+                color: type == "doctor" ? "white" : "rgb(97, 197, 247)",
                 marginTop: "10px",
                 marginBottom: "10px",
               }}
-              onClick={() => console.log("sign in")}
+              onClick={() => setType("doctor")}
             >
               Doctor
             </Button>
@@ -73,6 +103,30 @@ const SignUp = () => {
             value={confirmPassword}
             setState={setConfirmPassword}
           />
+          {/* <div
+            style={{
+              display: "flex",
+            }}
+          >
+            <div>
+              <label htmlFor="">Avilable Dates</label>
+              <select name="" id="">
+                {dateOfweek?.map((day) => (
+                  <option value={day}>{day}</option>
+                ))}
+              </select>
+            </div>
+            <TextInput
+              label="Start"
+              value={confirmPassword}
+              setState={setConfirmPassword}
+            />
+            <TextInput
+              label="End"
+              value={confirmPassword}
+              setState={setConfirmPassword}
+            />
+          </div> */}
           <Button
             variant="contained"
             style={{
@@ -82,7 +136,7 @@ const SignUp = () => {
               marginBottom: "10px",
               marginRight: "10px",
             }}
-            onClick={() => console.log("sign in")}
+            onClick={handleSignUp}
           >
             Sign Up
           </Button>

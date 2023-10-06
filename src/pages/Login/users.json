@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "Test Patient",
+    "email": "patient@voithy.com",
+    "password": "patient123",
+    "type": "patient"
+  },
+  {
+    "id": 2,
+    "name": "Test Doctor",
+    "email": "doctor@voithy.com",
+    "password": "doctor123",
+    "type": "doctor"
+  }
+]

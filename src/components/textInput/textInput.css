@@ -7,7 +7,8 @@
   margin-bottom: 3px;
   color: gray;
 }
-.textInput input {
+.textInput input,
+select {
   height: 38px;
   margin: 5px 0px;
   border-radius: 7px;
@@ -16,7 +17,8 @@
   outline: none;
   padding: 2px 7px;
 }
-.textInput input:focus {
+.textInput input:focus,
+select:focus {
   background-color: white;
   border: 1px solid rgb(221, 221, 221);
   outline: none;

@@ -4,7 +4,8 @@ import LandPage from "./pages/LandPage/LandPage";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 import Dashboard from "./pages/Dashboard/Dashboard";
-
+import { Toaster } from "react-hot-toast";
+import privateRoute from "./utilities/privateRoute";
 function App() {
   const location = useLocation();
   console.log("pathName", location.pathname);
@@ -28,12 +29,12 @@ function App() {
       location.pathname == "/signUp" ? null : (
         <NavBar />
       )}
-
+      <Toaster />
       <Routes>
         <Route exact path="/" element={<LandPage />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signUp" element={<SignUp />} />
-        <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/dashboard" element={privateRoute(<Dashboard />)} />
       </Routes>
     </div>
   );

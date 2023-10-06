@@ -5,10 +5,33 @@ import TextInput from "../../components/textInput/textInput";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import { login } from "../../utilities/fetchServer";
+import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { addLoginUser } from "../../redux/features/user";
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const handleLogin = async () => {
+    try {
+      let loginData = await login(email, password);
+      if (loginData) {
+        dispatch(addLoginUser(loginData));
+        toast.success("email and password correct ");
+        window.localStorage.setItem("voithy-token", loginData.id);
+        navigate("/dashboard");
+      } else {
+        toast.error("email or password are wrong !");
+      }
+    } catch (error) {
+      toast.error("email or password are wrong wrong !");
+    }
+  };
+  if (window.localStorage.getItem("voithy-token")) {
+    navigate("/dashboard");
+  }
   return (
     <LoginLayout>
       <div className="login">
@@ -49,7 +72,7 @@ const Login = () => {
               marginTop: "10px",
               marginBottom: "10px",
             }}
-            onClick={() => console.log("sign in")}
+            onClick={handleLogin}
           >
             Sign in
           </Button>
