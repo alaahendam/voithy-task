@@ -1,5 +1,5 @@
 import "./Dashboard.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PatientDashboard from "./patientDashboard";
 import DoctorDashboard from "./doctorDashboard";
 import Typography from "@mui/material/Typography";
@@ -13,9 +13,12 @@ const Dashboard = () => {
     { label: "Favourite", value: "favourite" },
     { label: "Setting", value: "setting" },
   ];
-  if (!window.localStorage.getItem("voithy-token")) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (!window.localStorage.getItem("voithy-token")) {
+      console.log("how");
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="Dashboard">
       <div className="menu">
