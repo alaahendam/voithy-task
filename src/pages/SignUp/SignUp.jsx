@@ -5,10 +5,13 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import TextInput from "../../components/textInput/textInput";
 import Typography from "@mui/material/Typography";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../firebase/firebase-config";
+import { signUp } from "../../utilities/fetchServer";
+import toast from "react-hot-toast";
+import { useSelector, useDispatch } from "react-redux";
+import { addLoginUser } from "../../redux/features/user";
 const SignUp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [type, setType] = useState("patient");
@@ -26,13 +29,12 @@ const SignUp = () => {
   // ];
   const handleSignUp = async () => {
     try {
-      const docRef = await addDoc(collection(db, "users"), {
-        name: name,
-        email: email,
-        password: password,
-        type: type,
-      });
-      console.log("Document written with ID: ", docRef.id);
+      let data = await signUp(name, email, password, type);
+      if (data.id) {
+        window.localStorage.setItem("voithy-token", data.id);
+        dispatch(addLoginUser(data));
+        navigate("/dashboard");
+      }
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -46,7 +48,6 @@ const SignUp = () => {
         <img
           src="images/logo.png"
           alt=""
-          srcset=""
           style={{
             width: "60px",
             height: "60px",
@@ -103,30 +104,6 @@ const SignUp = () => {
             value={confirmPassword}
             setState={setConfirmPassword}
           />
-          {/* <div
-            style={{
-              display: "flex",
-            }}
-          >
-            <div>
-              <label htmlFor="">Avilable Dates</label>
-              <select name="" id="">
-                {dateOfweek?.map((day) => (
-                  <option value={day}>{day}</option>
-                ))}
-              </select>
-            </div>
-            <TextInput
-              label="Start"
-              value={confirmPassword}
-              setState={setConfirmPassword}
-            />
-            <TextInput
-              label="End"
-              value={confirmPassword}
-              setState={setConfirmPassword}
-            />
-          </div> */}
           <Button
             variant="contained"
             style={{

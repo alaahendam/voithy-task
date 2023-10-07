@@ -9,7 +9,6 @@ const LoginLayout = ({ children }) => {
       <img
         src="/images/login-bg.jpg"
         alt=""
-        srcset=""
         style={{
           width: "100%",
           height: "100%",

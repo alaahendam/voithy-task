@@ -13,29 +13,37 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { addLoginUser } from "../redux/features/user";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+
 const pages = ["Home", "Services", "About As", "News"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+  console.log(user);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+    window.localStorage.clear();
+    dispatch(addLoginUser(null));
+  };
   return (
     <AppBar
       position="static"
@@ -52,7 +60,6 @@ function ResponsiveAppBar() {
             <img
               src="images/logo.png"
               alt=""
-              srcset=""
               style={{
                 width: "60px",
                 height: "60px",
@@ -107,7 +114,6 @@ function ResponsiveAppBar() {
             <img
               src="images/logo.png"
               alt=""
-              srcset=""
               style={{
                 width: "60px",
                 height: "60px",
@@ -133,37 +139,70 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-            }}
-          >
-            <Button
-              variant="contained"
+          {window.localStorage.getItem("voithy-token") || user ? (
+            <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle sx={{ color: "gray" }} />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+              </Menu>
+            </div>
+          ) : (
+            <div
               style={{
-                backgroundColor: "rgb(97, 197, 247)",
-                color: "white",
-                marginTop: "10px",
-                marginRight: "10px",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-around",
               }}
-              onClick={() => navigate("/login")}
             >
-              login
-            </Button>
-            <Button
-              variant="contained"
-              style={{
-                backgroundColor: "white",
-                color: "gray",
-                marginTop: "10px",
-              }}
-              onClick={() => navigate("/signUp")}
-            >
-              sign up
-            </Button>
-          </div>
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "rgb(97, 197, 247)",
+                  color: "white",
+                  marginTop: "10px",
+                  marginRight: "10px",
+                }}
+                onClick={() => navigate("/login")}
+              >
+                login
+              </Button>
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "white",
+                  color: "gray",
+                  marginTop: "10px",
+                }}
+                onClick={() => navigate("/signUp")}
+              >
+                sign up
+              </Button>
+            </div>
+          )}
+
           {/* <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

@@ -17,7 +17,11 @@ const Appointment = ({ name }) => {
         />
         <div>
           <h3>{name}</h3>
-          <p>{date.toISOString()}</p>
+          <p>
+            {date.toISOString().split("T")[0]},
+            {date.toISOString().split("T")[1].split(":")[0]}:
+            {date.toISOString().split("T")[1].split(":")[1]}
+          </p>
         </div>
       </div>
       <Button
@@ -25,7 +29,7 @@ const Appointment = ({ name }) => {
         style={{
           backgroundColor: "rgb(97, 197, 247)",
           color: "white",
-          fontSize: "12px",
+          fontSize: "10px",
         }}
         onClick={() => dispatch(setOpenRecords(true))}
       >

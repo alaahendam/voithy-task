@@ -38,7 +38,6 @@ const Login = () => {
         <img
           src="images/logo.png"
           alt=""
-          srcset=""
           style={{
             width: "60px",
             height: "60px",

@@ -19,7 +19,7 @@ const LandPage = () => {
         <Typography
           textAlign="left"
           sx={{
-            fontSize: "35px",
+            fontSize: "31px",
             fontWeight: "900",
             color: "gray",
             display: "inline",
@@ -28,7 +28,7 @@ const LandPage = () => {
           Live Better, for {""}
           <Typography
             sx={{
-              fontSize: "35px",
+              fontSize: "31px",
               fontWeight: "900",
               color: "rgb(97, 197, 247)",
               display: "inline",

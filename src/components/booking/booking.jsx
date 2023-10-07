@@ -1,8 +1,25 @@
 import "./booking.css";
 import PersonIcon from "@mui/icons-material/Person";
 import Button from "@mui/material/Button";
-
-const Booking = ({ name }) => {
+import {
+  addAppointment,
+  getAppointments,
+  sendEmail,
+} from "../../utilities/fetchServer";
+import { useDispatch } from "react-redux";
+import { addAppointments } from "../../redux/features/appointments";
+const Booking = ({ name, email }) => {
+  const dispatch = useDispatch();
+  let date = new Date();
+  const handleAddApoointment = async () => {
+    addAppointment({ name, email, date: date.toISOString() });
+    dispatch(
+      addAppointments(
+        await getAppointments(window.localStorage.getItem("voithy-token"))
+      )
+    );
+    sendEmail(name, email, "new patient make appointment");
+  };
   return (
     <div className="booking">
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -23,7 +40,7 @@ const Booking = ({ name }) => {
           color: "white",
           fontSize: "12px",
         }}
-        onClick={() => console.log("hahaha")}
+        onClick={handleAddApoointment}
       >
         Book
       </Button>

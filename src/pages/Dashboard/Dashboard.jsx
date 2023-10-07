@@ -11,6 +11,9 @@ const Dashboard = () => {
     { label: "Favourite", value: "favourite" },
     { label: "Setting", value: "setting" },
   ];
+  if (!window.localStorage.getItem("voithy-token")) {
+    navigate("/");
+  }
   return (
     <div className="Dashboard">
       <div className="menu">
@@ -25,7 +28,7 @@ const Dashboard = () => {
         >
           Menu
         </Typography>
-        {menu?.map((item) => (
+        {menu?.map((item, index) => (
           <div
             style={{
               backgroundColor:
@@ -33,6 +36,7 @@ const Dashboard = () => {
               cursor: "pointer",
               height: "50px",
             }}
+            key={index}
             onClick={() => setActiveMenu(item.value)}
           >
             <Typography

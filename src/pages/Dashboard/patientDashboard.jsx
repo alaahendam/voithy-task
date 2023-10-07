@@ -1,18 +1,28 @@
 import "./Dashboard.css";
 import Typography from "@mui/material/Typography";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Appointment from "../../components/appointment/appointment";
 import Booking from "../../components/booking/booking";
 import Dialog from "@mui/material/Dialog";
 import { useSelector, useDispatch } from "react-redux";
 import { setOpenRecords } from "../../redux/features/records";
 import Records from "../../components/records";
+import {
+  handleUploadImage,
+  sendEmail,
+  allDoctor,
+  getAppointments,
+} from "../../utilities/fetchServer";
+import { addAppointments } from "../../redux/features/appointments";
 const PatientDashboard = () => {
   const dispatch = useDispatch();
   const openRecord = useSelector((state) => state.records.openRecords);
   console.log("openRecord", openRecord);
   const [appointment, setAppointment] = useState("next");
+  const [doctors, setDoctors] = useState([]);
+  const appointments = useSelector((state) => state.appointments.appointments);
+  console.log(appointments);
   const users = [
     { name: "alaa" },
     { name: "alaa" },
@@ -27,23 +37,27 @@ const PatientDashboard = () => {
     { name: "alaa" },
     { name: "alaa" },
   ];
-  const doctors = [
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-    { name: "alaa" },
-  ];
+
   const handleCloseRecord = () => {
     dispatch(setOpenRecords(false));
   };
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    console.log(selectedImage);
+    handleUploadImage(selectedImage);
+    alert("upload image success !");
+  };
+  useEffect(() => {
+    const x = async () => {
+      setDoctors(await allDoctor());
+      dispatch(
+        addAppointments(
+          await getAppointments(window.localStorage.getItem("voithy-token"))
+        )
+      );
+    };
+    x();
+  }, []);
   return (
     <div className="dashboardInfo">
       <div className="leftSide">
@@ -81,7 +95,7 @@ const PatientDashboard = () => {
               Records
             </Typography>
           </Typography>
-          <div className="upload">
+          <label className="upload" htmlFor="uploadRecord">
             <CloudUploadIcon sx={{ fontSize: "40px" }} />
             <Typography
               textAlign="center"
@@ -93,7 +107,16 @@ const PatientDashboard = () => {
             >
               Upload Record
             </Typography>
-          </div>
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            id="uploadRecord"
+            onChange={handleImageChange}
+            style={{
+              visibility: "hidden",
+            }}
+          />
         </div>
         <div className="appointment">
           <Typography
@@ -107,8 +130,8 @@ const PatientDashboard = () => {
             Doctors
           </Typography>
           <div>
-            {doctors.map((user) => (
-              <Booking {...user} />
+            {doctors.map((user, index) => (
+              <Booking {...user} key={index} />
             ))}
           </div>
         </div>
@@ -161,8 +184,8 @@ const PatientDashboard = () => {
             </Typography>
           </div>
         </div>
-        {users.map((user) => (
-          <Appointment {...user} />
+        {appointments?.map((item, index) => (
+          <Appointment {...item} key={index} />
         ))}
       </div>
       <Dialog
@@ -171,9 +194,9 @@ const PatientDashboard = () => {
         onClose={handleCloseRecord}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        maxWidth={true}
+        maxWidth={"true"}
       >
-        <Records />
+        <Records recordsId={window.localStorage.getItem("voithy-token")} />
       </Dialog>
     </div>
   );
