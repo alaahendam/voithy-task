@@ -3,8 +3,10 @@ import { useState } from "react";
 import PatientDashboard from "./patientDashboard";
 import DoctorDashboard from "./doctorDashboard";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState("home");
   let menu = [
     { label: "Home", value: "home" },
