@@ -15,8 +15,10 @@ import {
   getAppointments,
 } from "../../utilities/fetchServer";
 import { addAppointments } from "../../redux/features/appointments";
+import { useNavigate } from "react-router-dom";
 const PatientDashboard = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const openRecord = useSelector((state) => state.records.openRecords);
   console.log("openRecord", openRecord);
   const [appointment, setAppointment] = useState("next");
